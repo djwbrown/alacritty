@@ -275,6 +275,10 @@ pub struct WindowConfig {
     /// Draw the window with title bar / borders
     #[serde(default, deserialize_with = "failure_default")]
     decorations: bool,
+
+    /// Make the window fullscreen on startup
+    #[serde(default, deserialize_with = "failure_default")]
+    fullscreen: bool,
 }
 
 fn default_padding() -> Delta {
@@ -297,6 +301,10 @@ impl WindowConfig {
     pub fn decorations(&self) -> bool {
         self.decorations
     }
+
+    pub fn fullscreen(&self) -> bool {
+        self.fullscreen
+    }
 }
 
 impl Default for WindowConfig {
@@ -305,6 +313,7 @@ impl Default for WindowConfig {
             dimensions: Default::default(),
             padding: default_padding(),
             decorations: true,
+            fullscreen: false,
         }
     }
 }

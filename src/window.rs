@@ -193,12 +193,19 @@ impl Window {
     ) -> Result<Window> {
         let event_loop = EventsLoop::new();
 
+        // Get the monitor and apply fullscreen if configured
+        let monitor = event_loop.get_primary_monitor();
+        // TODO replace with .get_available_monitors().nth(config_value)
+
         Window::platform_window_init();
         let window = WindowBuilder::new()
             .with_title(title)
             .with_visibility(false)
             .with_transparency(true)
-            .with_decorations(window_config.decorations());
+            .with_decorations(window_config.decorations())
+            .with_fullscreen(if window_config.fullscreen()
+                             { Some(monitor) } else { None });
+
         let context = ContextBuilder::new()
             .with_vsync(true);
         let window = ::glutin::GlWindow::new(window, context, &event_loop)?;
